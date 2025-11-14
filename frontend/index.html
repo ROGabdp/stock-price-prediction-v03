@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>股價漲跌機率預測系統</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- 導航選單 -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="index.html" class="navbar-brand">📈 股價預測系統</a>
+            <ul class="navbar-nav">
+                <li><a href="index.html" class="active">首頁</a></li>
+                <li><a href="pages/data-management.html">資料管理</a></li>
+                <li><a href="pages/model-training.html">模型訓練</a></li>
+                <li><a href="pages/prediction.html">預測執行</a></li>
+                <li><a href="pages/model-comparison.html">模型比較</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- 主要內容 -->
+    <div class="container">
+        <!-- 頁面標題 -->
+        <div class="page-header">
+            <h1>歡迎使用股價漲跌機率預測系統</h1>
+            <p>使用 LSTM 神經網路預測未來股價走勢</p>
+        </div>
+
+        <!-- 功能卡片 -->
+        <div class="card">
+            <div class="card-header">系統功能</div>
+            <div class="card-body">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem;">
+                    <!-- 資料管理 -->
+                    <div style="border: 1px solid #ecf0f1; border-radius: 8px; padding: 1.5rem;">
+                        <h3 style="color: #2c3e50; margin-bottom: 0.5rem;">📁 資料管理</h3>
+                        <p style="color: #7f8c8d; margin-bottom: 1rem;">上傳、查看、管理歷史股價 CSV 資料檔案</p>
+                        <a href="pages/data-management.html" class="btn btn-primary" style="width: 100%;">前往管理</a>
+                    </div>
+
+                    <!-- 模型訓練 -->
+                    <div style="border: 1px solid #ecf0f1; border-radius: 8px; padding: 1.5rem;">
+                        <h3 style="color: #2c3e50; margin-bottom: 0.5rem;">🧠 模型訓練</h3>
+                        <p style="color: #7f8c8d; margin-bottom: 1rem;">訓練 LSTM 模型，自動調整超參數</p>
+                        <a href="pages/model-training.html" class="btn btn-success" style="width: 100%;">開始訓練</a>
+                    </div>
+
+                    <!-- 預測執行 -->
+                    <div style="border: 1px solid #ecf0f1; border-radius: 8px; padding: 1.5rem;">
+                        <h3 style="color: #2c3e50; margin-bottom: 0.5rem;">🔮 預測執行</h3>
+                        <p style="color: #7f8c8d; margin-bottom: 1rem;">使用已訓練模型預測未來股價走勢</p>
+                        <a href="pages/prediction.html" class="btn btn-primary" style="width: 100%;">執行預測</a>
+                    </div>
+
+                    <!-- 模型比較 -->
+                    <div style="border: 1px solid #ecf0f1; border-radius: 8px; padding: 1.5rem;">
+                        <h3 style="color: #2c3e50; margin-bottom: 0.5rem;">📊 模型比較</h3>
+                        <p style="color: #7f8c8d; margin-bottom: 1rem;">比較多個模型的預測結果</p>
+                        <a href="pages/model-comparison.html" class="btn btn-secondary" style="width: 100%;">開始比較</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 使用說明 -->
+        <div class="card">
+            <div class="card-header">快速開始</div>
+            <div class="card-body">
+                <ol style="line-height: 2; color: #555;">
+                    <li><strong>上傳資料</strong>：前往「資料管理」頁面，上傳包含歷史股價的 CSV 檔案</li>
+                    <li><strong>訓練模型</strong>：前往「模型訓練」頁面，選擇資料檔案並設定預測天數，開始訓練</li>
+                    <li><strong>執行預測</strong>：前往「預測執行」頁面，選擇已訓練的模型與預測起始日期</li>
+                    <li><strong>查看結果</strong>：系統會顯示互動式圖表，包含歷史股價與預測走勢</li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- 系統資訊 -->
+        <div class="card">
+            <div class="card-header">系統資訊</div>
+            <div class="card-body">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                    <div>
+                        <strong>版本：</strong> 1.0.0
+                    </div>
+                    <div>
+                        <strong>後端：</strong> Flask + TensorFlow
+                    </div>
+                    <div>
+                        <strong>前端：</strong> 原生 JavaScript
+                    </div>
+                    <div>
+                        <strong>圖表：</strong> Chart.js
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 伺服器狀態 -->
+        <div class="card">
+            <div class="card-header">伺服器狀態</div>
+            <div class="card-body">
+                <div id="server-status">
+                    <div class="loading">
+                        <div class="spinner"></div>
+                        <span style="margin-left: 1rem;">檢查伺服器狀態...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { checkServerHealth } from './js/api.js';
+
+        // 檢查伺服器健康狀態
+        async function updateServerStatus() {
+            const statusDiv = document.getElementById('server-status');
+            try {
+                const isHealthy = await checkServerHealth();
+                if (isHealthy) {
+                    statusDiv.innerHTML = `
+                        <div class="alert alert-success">
+                            ✅ 後端伺服器運作正常 (http://localhost:5000)
+                        </div>
+                    `;
+                } else {
+                    statusDiv.innerHTML = `
+                        <div class="alert alert-error">
+                            ❌ 無法連線至後端伺服器，請確認伺服器是否已啟動
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                statusDiv.innerHTML = `
+                    <div class="alert alert-error">
+                        ❌ 無法連線至後端伺服器：${error.message}
+                    </div>
+                `;
+            }
+        }
+
+        // 頁面載入時檢查伺服器狀態
+        updateServerStatus();
+    </script>
+</body>
+</html>

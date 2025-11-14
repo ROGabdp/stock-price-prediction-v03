@@ -1,0 +1,302 @@
+openapi: 3.0.3
+info:
+  title: 股價漲跌機率預測系統 API
+  description: |
+    提供股價預測模型訓練、預測執行、資料管理等功能的 RESTful API。
+    
+    **核心功能**：
+    - 資料檔案管理（上傳、列表、刪除）
+    - 模型訓練（啟動訓練、查詢進度、取得結果）
+    - 模型管理（列表、詳情、刪除）
+    - 預測執行（執行預測、取得結果）
+    - 模型比較
+    
+    **命名慣例**: 所有欄位使用 camelCase（符合憲章要求）
+    **錯誤訊息**: 使用正體中文（符合憲章要求）
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:5000/api
+    description: 開發環境
+
+tags:
+  - name: 資料管理
+    description: 歷史股價資料檔案的上傳與管理
+  - name: 模型訓練
+    description: 模型訓練任務的建立與監控
+  - name: 模型管理
+    description: 已訓練模型的查詢與管理
+  - name: 預測執行
+    description: 使用已訓練模型進行股價預測
+
+paths:
+  /data/upload:
+    post:
+      tags:
+        - 資料管理
+      summary: 上傳 CSV 資料檔案
+      operationId: uploadDataFile
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+                fileName:
+                  type: string
+      responses:
+        "201":
+          description: 上傳成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  data:
+                    type: object
+
+  /data/files:
+    get:
+      tags:
+        - 資料管理
+      summary: 取得資料檔案清單
+      operationId: listDataFiles
+      responses:
+        "200":
+          description: 成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: array
+                    items:
+                      type: object
+
+  /data/files/{fileId}:
+    delete:
+      tags:
+        - 資料管理
+      summary: 刪除資料檔案
+      operationId: deleteDataFile
+      parameters:
+        - name: fileId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: 刪除成功
+
+  /models/train:
+    post:
+      tags:
+        - 模型訓練
+      summary: 啟動模型訓練
+      operationId: startTraining
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                modelName:
+                  type: string
+                dataFileId:
+                  type: string
+                predictionDays:
+                  type: integer
+                  minimum: 1
+                  maximum: 30
+              required:
+                - modelName
+                - dataFileId
+                - predictionDays
+      responses:
+        "202":
+          description: 訓練任務已建立
+
+  /models/training/tasks/{taskId}:
+    get:
+      tags:
+        - 模型訓練
+      summary: 查詢訓練任務進度
+      operationId: getTrainingTask
+      parameters:
+        - name: taskId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: 成功
+
+  /models:
+    get:
+      tags:
+        - 模型管理
+      summary: 取得模型清單
+      operationId: listModels
+      responses:
+        "200":
+          description: 成功
+
+  /models/{modelId}:
+    get:
+      tags:
+        - 模型管理
+      summary: 取得模型詳情
+      operationId: getModel
+      parameters:
+        - name: modelId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: 成功
+    
+    delete:
+      tags:
+        - 模型管理
+      summary: 刪除模型
+      operationId: deleteModel
+      parameters:
+        - name: modelId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: 刪除成功
+
+  /predict:
+    post:
+      tags:
+        - 預測執行
+      summary: 執行股價預測
+      operationId: predict
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                modelId:
+                  type: string
+                dataFileId:
+                  type: string
+                startDate:
+                  type: string
+                  format: date
+              required:
+                - modelId
+                - dataFileId
+                - startDate
+      responses:
+        "200":
+          description: 預測成功
+
+  /predict/compare:
+    post:
+      tags:
+        - 預測執行
+      summary: 比較多個模型的預測結果
+      operationId: compareModels
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                modelIds:
+                  type: array
+                  items:
+                    type: string
+                dataFileId:
+                  type: string
+                startDate:
+                  type: string
+                  format: date
+      responses:
+        "200":
+          description: 成功
+
+components:
+  schemas:
+    DataFile:
+      type: object
+      properties:
+        fileId:
+          type: string
+        fileName:
+          type: string
+        uploadedAt:
+          type: string
+          format: date-time
+        dateRange:
+          type: object
+          properties:
+            start:
+              type: string
+              format: date
+            end:
+              type: string
+              format: date
+        rowCount:
+          type: integer
+    
+    PredictionModel:
+      type: object
+      properties:
+        modelId:
+          type: string
+        modelName:
+          type: string
+        trainedAt:
+          type: string
+          format: date-time
+        predictionDays:
+          type: integer
+        metrics:
+          type: object
+    
+    TrainingTask:
+      type: object
+      properties:
+        taskId:
+          type: string
+        modelName:
+          type: string
+        status:
+          type: string
+          enum: [pending, running, completed, failed]
+        progress:
+          type: object
+    
+    Error:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: false
+        error:
+          type: string

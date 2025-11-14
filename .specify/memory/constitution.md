@@ -1,50 +1,305 @@
-# [PROJECT_NAME] Constitution
-<!-- Example: Spec Constitution, TaskFlow Constitution, etc. -->
+<!--
+═══════════════════════════════════════════════════════════════════════════
+SYNC IMPACT REPORT
+═══════════════════════════════════════════════════════════════════════════
+Version Change: INITIAL → 1.0.0
+Rationale: 初次建立專案憲章，定義核心治理原則與開發規範
 
-## Core Principles
+Modified Principles:
+  - 建立所有核心原則 (I-VII)
 
-### [PRINCIPLE_1_NAME]
-<!-- Example: I. Library-First -->
-[PRINCIPLE_1_DESCRIPTION]
-<!-- Example: Every feature starts as a standalone library; Libraries must be self-contained, independently testable, documented; Clear purpose required - no organizational-only libraries -->
+Added Sections:
+  - 核心原則 (I. 正體中文優先 至 VII. 簡潔務實)
+  - 程式碼品質標準
+  - 介面與命名規範
+  - 治理規則
 
-### [PRINCIPLE_2_NAME]
-<!-- Example: II. CLI Interface -->
-[PRINCIPLE_2_DESCRIPTION]
-<!-- Example: Every library exposes functionality via CLI; Text in/out protocol: stdin/args → stdout, errors → stderr; Support JSON + human-readable formats -->
+Removed Sections:
+  - 無 (初次建立)
 
-### [PRINCIPLE_3_NAME]
-<!-- Example: III. Test-First (NON-NEGOTIABLE) -->
-[PRINCIPLE_3_DESCRIPTION]
-<!-- Example: TDD mandatory: Tests written → User approved → Tests fail → Then implement; Red-Green-Refactor cycle strictly enforced -->
+Templates Requiring Updates:
+  ✅ plan-template.md - Constitution Check 區段已存在，符合憲章原則
+  ✅ spec-template.md - 規格模板已支援獨立測試與優先級排序，符合 MVP 原則
+  ✅ tasks-template.md - 任務模板已支援獨立用戶故事實作，符合憲章要求
+  ✅ agent-file-template.md - 代理檔案模板需要根據實際技術堆疊更新
+  ✅ checklist-template.md - 檢查清單模板無需修改
 
-### [PRINCIPLE_4_NAME]
-<!-- Example: IV. Integration Testing -->
-[PRINCIPLE_4_DESCRIPTION]
-<!-- Example: Focus areas requiring integration tests: New library contract tests, Contract changes, Inter-service communication, Shared schemas -->
+Follow-up TODOs:
+  - 無待辦項目，所有佔位符已填寫完成
+═══════════════════════════════════════════════════════════════════════════
+-->
 
-### [PRINCIPLE_5_NAME]
-<!-- Example: V. Observability, VI. Versioning & Breaking Changes, VII. Simplicity -->
-[PRINCIPLE_5_DESCRIPTION]
-<!-- Example: Text I/O ensures debuggability; Structured logging required; Or: MAJOR.MINOR.BUILD format; Or: Start simple, YAGNI principles -->
+# Stock Price Prediction (股票價格預測) 專案憲章
 
-## [SECTION_2_NAME]
-<!-- Example: Additional Constraints, Security Requirements, Performance Standards, etc. -->
+## 核心原則
 
-[SECTION_2_CONTENT]
-<!-- Example: Technology stack requirements, compliance standards, deployment policies, etc. -->
+### I. 正體中文優先
 
-## [SECTION_3_NAME]
-<!-- Example: Development Workflow, Review Process, Quality Gates, etc. -->
+所有專案文件、程式碼註解、使用者介面文字、提交訊息及溝通內容，**必須 (MUST)** 使用正體中文（繁體中文）撰寫。
 
-[SECTION_3_CONTENT]
-<!-- Example: Code review requirements, testing gates, deployment approval process, etc. -->
+**不可協商規則：**
+- 所有 Markdown 文件（spec.md、plan.md、tasks.md、README 等）必須使用正體中文
+- 所有程式碼註解必須使用正體中文
+- 所有使用者可見的文字（UI、錯誤訊息、日誌）必須使用正體中文
+- Git 提交訊息必須使用正體中文
+- 團隊溝通與協作文件必須使用正體中文
 
-## Governance
-<!-- Example: Constitution supersedes all other practices; Amendments require documentation, approval, migration plan -->
+**例外情況：**
+- 程式碼識別符（變數名、函式名、類別名）使用英文，遵循各語言慣例
+- 第三方套件、框架、工具的官方名稱保持原文
+- 技術術語可保留英文，但首次出現時應附正體中文說明
 
-[GOVERNANCE_RULES]
-<!-- Example: All PRs/reviews must verify compliance; Complexity must be justified; Use [GUIDANCE_FILE] for runtime development guidance -->
+**理由：** 確保團隊溝通無障礙，降低理解成本，提高專案可維護性與本地化品質。
 
-**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]
-<!-- Example: Version: 2.1.1 | Ratified: 2025-06-13 | Last Amended: 2025-07-16 -->
+---
+
+### II. 規格驅動開發 (Spec-Driven Development)
+
+開發流程 **必須 (MUST)** 遵循「規格先行」原則，所有功能實作前必須完成明確的規格文件。
+
+**不可協商規則：**
+- 任何功能開發前，必須先完成 `spec.md`（功能規格）
+- 規格必須包含：用戶場景、驗收標準、功能需求、成功指標
+- 規格必須經過審核與確認後，才能進入設計與實作階段
+- 實作過程中若發現規格不明確或缺失，必須暫停並更新規格
+- 所有變更必須反映回規格文件，保持文件與實作同步
+
+**工作流程：**
+1. 使用者需求 → 功能規格 (spec.md)
+2. 技術研究與設計 → 實作計畫 (plan.md)
+3. 任務分解 → 任務清單 (tasks.md)
+4. 測試先行 → 實作 → 驗證
+
+**理由：** 規格驅動開發確保團隊對需求有共識，減少返工，提高交付品質。
+
+---
+
+### III. 高品質可測試的 MVP
+
+專案 **必須 (MUST)** 專注於交付一個高品質、可測試 (Testable) 的最小可行產品 (Minimum Viable Product, MVP)。
+
+**不可協商規則：**
+- 每個用戶故事必須獨立可測試，能夠單獨驗證其功能與價值
+- 用戶故事必須按優先級排序（P1、P2、P3...），P1 為最高優先級
+- MVP 由 P1 用戶故事組成，必須能獨立交付並產生價值
+- 所有功能必須具備明確的驗收標準 (Acceptance Criteria)
+- 實作前必須定義如何測試該功能（手動測試或自動化測試）
+- 測試可選，但若需要測試，必須在實作前編寫測試，確保測試失敗後再實作
+
+**MVP 定義標準：**
+- 可獨立部署與演示
+- 涵蓋核心用戶旅程（P1 故事）
+- 具備基本錯誤處理與日誌
+- 可量測的成功指標
+
+**理由：** 聚焦 MVP 避免範圍蔓延，確保快速交付價值；獨立可測試性保證每個功能都是高品質的。
+
+---
+
+### IV. 嚴格禁止過度設計 (No Overdesign)
+
+所有技術決策與實作方案 **必須 (MUST)** 保持簡潔務實，嚴格禁止任何過度設計。
+
+**不可協商規則：**
+- YAGNI 原則：你不會需要它 (You Aren't Gonna Need It) — 不實作當前不需要的功能
+- 避免預測性設計：不為「未來可能需要」的需求進行架構設計
+- 避免過度抽象：不引入當前用不到的抽象層、設計模式或框架
+- 選擇最簡單可行的方案：在多個方案中，優先選擇最簡單且能滿足需求的方案
+- 複雜性必須有明確理由：若必須引入複雜性，需在 `plan.md` 的「複雜性追蹤」表格中說明
+
+**複雜性審查標準：**
+- 為何需要此複雜性？
+- 更簡單的替代方案為何不可行？
+- 此複雜性是否能在未來移除？
+
+**理由：** 過度設計增加維護成本、降低開發速度、提高出錯機率。簡潔的方案更易理解、測試與維護。
+
+---
+
+### V. Pythonic 與 PEP 8
+
+所有 Python 程式碼 **必須 (MUST)** 保持 Pythonic 風格並嚴格遵循 PEP 8 規範。
+
+**不可協商規則：**
+- 遵循 PEP 8 程式碼風格指南（縮排、命名、空白、換行等）
+- 使用 Python 慣用語法（list comprehension、context manager、decorator 等）
+- 變數與函式命名使用 `snake_case`
+- 類別命名使用 `PascalCase`
+- 常數命名使用 `UPPER_SNAKE_CASE`
+- 模組與套件名稱使用小寫，避免底線（除非必要）
+- 使用型別提示 (Type Hints) 提高程式碼可讀性與可維護性
+- 使用 `black` 或 `ruff` 自動格式化工具
+- 使用 `pylint` 或 `flake8` 進行程式碼檢查
+
+**Pythonic 範例：**
+```python
+# Good: Pythonic
+result = [x * 2 for x in range(10) if x % 2 == 0]
+
+# Bad: Not Pythonic
+result = []
+for x in range(10):
+    if x % 2 == 0:
+        result.append(x * 2)
+```
+
+**理由：** 一致的程式碼風格提高可讀性，Pythonic 風格確保程式碼符合 Python 社群最佳實踐。
+
+---
+
+### VI. Idiomatic JavaScript/React
+
+所有 JavaScript 程式碼 **必須 (MUST)** 保持 Idiomatic 風格並遵循業界推薦的 JS/React 慣例。
+
+**不可協商規則：**
+- 遵循 Airbnb JavaScript Style Guide 或 Standard JS
+- 使用現代 JavaScript (ES6+) 語法：箭頭函式、解構、模板字串、async/await
+- React 元件使用函式元件 (Function Components) + Hooks
+- 變數與函式命名使用 `camelCase`
+- 類別與 React 元件命名使用 `PascalCase`
+- 常數命名使用 `UPPER_SNAKE_CASE`
+- 使用 ESLint + Prettier 自動格式化與檢查
+- 使用 TypeScript 型別檢查（若專案採用 TypeScript）
+
+**React 最佳實踐：**
+- 使用 Hooks (useState, useEffect, useContext 等)
+- 避免不必要的 re-render（使用 useMemo、useCallback）
+- 保持元件單一職責
+- Props 使用解構賦值
+- 使用 PropTypes 或 TypeScript 進行型別檢查
+
+**理由：** 一致的 JavaScript/React 風格確保程式碼品質，符合業界標準，提高團隊協作效率。
+
+---
+
+### VII. 簡潔務實 (Simplicity & Pragmatism)
+
+所有技術決策 **必須 (MUST)** 以簡潔務實為最高原則。
+
+**不可協商規則：**
+- 優先使用標準庫與成熟框架，避免自行實作已有解決方案的功能
+- 優先選擇文件齊全、社群活躍的工具與套件
+- 避免引入過多依賴，每個依賴都需明確理由
+- 程式碼應易於理解，註解說明「為什麼」而非「做什麼」
+- 函式保持簡短（建議 < 50 行），職責單一
+- 避免過早優化，先確保正確性，再考慮效能
+
+**簡潔性檢查清單：**
+- 這段程式碼是否能用更簡單的方式實作？
+- 是否有現成的函式庫或工具可以取代？
+- 新進成員是否能快速理解這段程式碼？
+
+**理由：** 簡潔務實的程式碼更易維護、測試與擴展，降低長期成本。
+
+---
+
+## 程式碼品質標準
+
+### 程式碼審查要求
+
+所有程式碼 **必須 (MUST)** 經過審查後才能合併至主分支。
+
+**審查標準：**
+- 符合憲章所有核心原則
+- 通過所有自動化檢查（linting、formatting、測試）
+- 註解充分且使用正體中文
+- 無明顯效能問題或安全漏洞
+- 符合專案現有架構與慣例
+
+### 測試要求（若適用）
+
+若專案需要測試，**必須 (MUST)** 遵循以下規範：
+
+- 測試必須在實作前編寫（Test-First）
+- 測試必須先失敗，再透過實作使其通過（Red-Green-Refactor）
+- 測試必須具備明確的斷言 (Assertions)
+- 測試必須可獨立執行且可重複
+- 測試必須涵蓋正常情境與邊界情境
+
+---
+
+## 介面與命名規範
+
+### API 介面標準
+
+所有 API 介面（包含參數與欄位）**必須 (MUST)** 保持一致且專業，並一律採用 `camelCase` 命名慣例。
+
+**不可協商規則：**
+- 所有 API 端點、查詢參數、請求欄位、回應欄位使用 `camelCase`
+- 避免縮寫，使用完整且具描述性的名稱
+- 保持命名一致性：相同概念使用相同名稱（例如：`userId` 而非混用 `user_id` 或 `uid`）
+- 布林值欄位使用肯定語氣（`isActive` 而非 `notInactive`）
+- 陣列欄位使用複數形式（`items`、`users`）
+- 日期時間欄位使用 ISO 8601 格式
+
+**範例：**
+```json
+{
+  "userId": "12345",
+  "userName": "張三",
+  "isActive": true,
+  "createdAt": "2025-11-13T21:46:06+08:00",
+  "orderItems": [
+    {
+      "itemId": "item-001",
+      "itemName": "產品 A",
+      "quantity": 2
+    }
+  ]
+}
+```
+
+**理由：** 一致的命名慣例提高 API 可預測性，降低整合成本，提升開發者體驗。
+
+---
+
+## 治理規則
+
+### 憲章地位
+
+本憲章 **超越 (supersedes)** 所有其他實踐指南、慣例文件與口頭約定。若有衝突，以本憲章為準。
+
+### 修訂程序
+
+憲章修訂 **必須 (MUST)** 遵循以下流程：
+
+1. **提議階段：** 任何團隊成員可提出修訂提議，需包含：
+   - 修訂原因與背景
+   - 修訂內容（新增、修改或刪除原則）
+   - 影響範圍分析
+
+2. **審查階段：** 修訂提議需經過團隊審查與討論
+
+3. **核准階段：** 修訂需獲得專案負責人核准
+
+4. **同步階段：** 修訂核准後，需更新所有相關模板與文件
+
+5. **版本控制：** 修訂完成後，需遞增憲章版本號並更新「最後修訂日期」
+
+### 版本控制規則
+
+憲章版本號遵循語義化版本控制 (Semantic Versioning)：`MAJOR.MINOR.PATCH`
+
+- **MAJOR：** 向後不相容的治理變更、原則移除或重新定義
+- **MINOR：** 新增原則、新增章節或大幅擴展指導內容
+- **PATCH：** 釐清說明、文字修飾、錯字修正、非語義性改進
+
+### 合規性審查
+
+所有 Pull Request (PR) 與程式碼審查 **必須 (MUST)** 驗證是否符合憲章規範。
+
+**審查檢查清單：**
+- [ ] 是否使用正體中文撰寫文件與註解？
+- [ ] 是否遵循規格驅動開發流程？
+- [ ] 是否聚焦於 MVP 交付？
+- [ ] 是否避免過度設計？
+- [ ] Python 程式碼是否符合 PEP 8 與 Pythonic 風格？
+- [ ] JavaScript 程式碼是否符合 Idiomatic 風格？
+- [ ] API 介面是否使用 camelCase 命名？
+- [ ] 是否保持簡潔務實？
+
+若有違反憲章之處，需明確說明理由並記錄於 `plan.md` 的「複雜性追蹤」表格。
+
+---
+
+**版本：** 1.0.0 | **批准日期：** 2025-11-13 | **最後修訂日期：** 2025-11-13

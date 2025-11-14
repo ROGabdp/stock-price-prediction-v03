@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>模型比較 - 股價預測系統</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+    <!-- 導航選單 -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="../index.html" class="navbar-brand">📈 股價預測系統</a>
+            <ul class="navbar-nav">
+                <li><a href="../index.html">首頁</a></li>
+                <li><a href="data-management.html">資料管理</a></li>
+                <li><a href="model-training.html">模型訓練</a></li>
+                <li><a href="prediction.html">預測執行</a></li>
+                <li><a href="model-comparison.html" class="active">模型比較</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- 主要內容 -->
+    <div class="container">
+        <!-- 頁面標題 -->
+        <div class="page-header">
+            <h1>📊 模型比較</h1>
+            <p>比較多個模型的訓練效能與超參數</p>
+        </div>
+
+        <!-- 模型選擇 -->
+        <div class="card">
+            <div class="card-header">選擇要比較的模型</div>
+            <div class="card-body">
+                <form id="comparison-form">
+                    <div class="form-group">
+                        <label>已訓練模型 (請至少選擇 2 個模型)</label>
+                        <div id="model-checkboxes" style="margin-top: 0.5rem;">
+                            <!-- 模型選項將由 JS 動態生成 -->
+                        </div>
+                        <small style="color: #7f8c8d;">
+                            最多可同時比較 10 個模型
+                        </small>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" id="compare-btn">
+                        開始比較
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- 比較結果 -->
+        <div class="card hidden" id="result-card">
+            <div class="card-header">比較結果</div>
+            <div class="card-body">
+                <!-- 最佳模型 -->
+                <div id="best-model-info" style="padding: 1rem; background: #d4edda; border-left: 4px solid #28a745; border-radius: 4px; margin-bottom: 2rem;">
+                    <!-- 最佳模型資訊將顯示在這裡 -->
+                </div>
+
+                <!-- 效能比較圖表 -->
+                <div style="margin-bottom: 2rem;">
+                    <h3 style="margin-bottom: 1rem;">效能指標比較</h3>
+                    <div style="height: 300px;">
+                        <canvas id="metrics-chart"></canvas>
+                    </div>
+                </div>
+
+                <!-- 詳細比較表格 -->
+                <div>
+                    <h3 style="margin-bottom: 1rem;">詳細比較</h3>
+                    <div id="comparison-table-container">
+                        <!-- 比較表格將顯示在這裡 -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="../js/model-comparison.js"></script>
+</body>
+</html>

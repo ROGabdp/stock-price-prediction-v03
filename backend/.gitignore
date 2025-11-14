@@ -1,0 +1,52 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+dist/
+build/
+
+# 虛擬環境
+venv/
+.venv/
+ENV/
+env/
+
+# 資料與模型
+data/uploaded/
+models/
+*.keras
+*.h5
+
+# 日誌
+logs/
+*.log
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# 環境變數
+.env
+.env.local
+
+# 作業系統
+.DS_Store
+Thumbs.db
+
+# 測試與覆蓋率
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Jupyter Notebook
+.ipynb_checkpoints/
+
+# Keras Tuner
+untitled_project/
+my_dir/

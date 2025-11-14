@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>模型訓練 - 股價預測系統</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <!-- 導航選單 -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="../index.html" class="navbar-brand">📈 股價預測系統</a>
+            <ul class="navbar-nav">
+                <li><a href="../index.html">首頁</a></li>
+                <li><a href="data-management.html">資料管理</a></li>
+                <li><a href="model-training.html" class="active">模型訓練</a></li>
+                <li><a href="prediction.html">預測執行</a></li>
+                <li><a href="model-comparison.html">模型比較</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- 主要內容 -->
+    <div class="container">
+        <!-- 頁面標題 -->
+        <div class="page-header">
+            <h1>🧠 模型訓練</h1>
+            <p>訓練 LSTM 神經網路模型，系統將自動執行超參數調整</p>
+        </div>
+
+        <!-- 訓練表單 -->
+        <div class="card">
+            <div class="card-header">訓練新模型</div>
+            <div class="card-body">
+                <form id="training-form">
+                    <div class="form-group">
+                        <label for="data-file-select">選擇資料檔案 *</label>
+                        <select id="data-file-select" class="form-control" required>
+                            <option value="">-- 請選擇資料檔案 --</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="model-name">模型名稱 *</label>
+                        <input
+                            type="text"
+                            id="model-name"
+                            class="form-control"
+                            placeholder="例如: 台股預測模型 v1"
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="prediction-days">預測天數 (1-30) *</label>
+                        <input
+                            type="number"
+                            id="prediction-days"
+                            class="form-control"
+                            min="1"
+                            max="30"
+                            value="5"
+                            required
+                        >
+                        <small style="color: #7f8c8d;">系統將預測未來 N 天的股價走勢</small>
+                    </div>
+
+                    <button type="submit" class="btn btn-success" id="start-training-btn">
+                        開始訓練
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- 訓練進度 -->
+        <div class="card hidden" id="training-progress-card">
+            <div class="card-header">訓練進度</div>
+            <div class="card-body">
+                <div id="progress-info">
+                    <p><strong>任務 ID:</strong> <span id="task-id">-</span></p>
+                    <p><strong>狀態:</strong> <span id="task-status">-</span></p>
+                    <p><strong>當前 Epoch:</strong> <span id="current-epoch">-</span> / <span id="total-epochs">-</span></p>
+                    <p><strong>訓練損失:</strong> <span id="train-loss">-</span></p>
+                    <p><strong>驗證損失:</strong> <span id="val-loss">-</span></p>
+                </div>
+                <div class="loading" id="training-spinner">
+                    <div class="spinner"></div>
+                    <span style="margin-left: 1rem;">訓練進行中，請稍候...</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 訓練結果 -->
+        <div class="card hidden" id="training-result-card">
+            <div class="card-header">訓練結果</div>
+            <div class="card-body">
+                <div id="result-info"></div>
+            </div>
+        </div>
+
+        <!-- 已訓練模型列表 -->
+        <div class="card">
+            <div class="card-header">
+                已訓練模型
+                <button class="btn btn-secondary" style="float: right; padding: 0.5rem 1rem;" onclick="location.reload()">
+                    重新整理
+                </button>
+            </div>
+            <div class="card-body">
+                <div id="models-list">
+                    <div class="loading">
+                        <div class="spinner"></div>
+                        <span style="margin-left: 1rem;">載入模型列表...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="../js/model-training.js"></script>
+</body>
+</html>

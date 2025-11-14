@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>預測執行 - 股價預測系統</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+    <!-- 導航選單 -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="../index.html" class="navbar-brand">📈 股價預測系統</a>
+            <ul class="navbar-nav">
+                <li><a href="../index.html">首頁</a></li>
+                <li><a href="data-management.html">資料管理</a></li>
+                <li><a href="model-training.html">模型訓練</a></li>
+                <li><a href="prediction.html" class="active">預測執行</a></li>
+                <li><a href="model-comparison.html">模型比較</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- 主要內容 -->
+    <div class="container">
+        <!-- 頁面標題 -->
+        <div class="page-header">
+            <h1>🔮 預測執行</h1>
+            <p>使用已訓練模型預測未來股價走勢</p>
+        </div>
+
+        <!-- 預測表單 -->
+        <div class="card">
+            <div class="card-header">設定預測參數</div>
+            <div class="card-body">
+                <form id="prediction-form">
+                    <div class="form-group">
+                        <label for="model-select">選擇模型 *</label>
+                        <select id="model-select" class="form-control" required>
+                            <option value="">-- 請選擇已訓練的模型 --</option>
+                        </select>
+                        <div id="model-info" class="hidden" style="margin-top: 0.5rem; padding: 0.5rem; background: #ecf0f1; border-radius: 4px;">
+                            <!-- 模型資訊將顯示在這裡 -->
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="data-file-select">選擇資料檔案 *</label>
+                        <select id="data-file-select" class="form-control" required>
+                            <option value="">-- 請選擇資料檔案 --</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="start-date">預測起始日期 *</label>
+                        <input
+                            type="date"
+                            id="start-date"
+                            class="form-control"
+                            required
+                        >
+                        <small style="color: #7f8c8d;">選擇從哪一天開始進行預測</small>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" id="predict-btn">
+                        開始預測
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- 預測結果 -->
+        <div class="card hidden" id="result-card">
+            <div class="card-header">預測結果</div>
+            <div class="card-body">
+                <!-- 圖表 -->
+                <div style="height: 400px; margin-bottom: 2rem;">
+                    <canvas id="prediction-chart"></canvas>
+                </div>
+
+                <!-- 預測詳情 -->
+                <div id="prediction-details"></div>
+
+                <!-- 模型資訊 -->
+                <div id="result-metadata" style="margin-top: 1.5rem; padding: 1rem; background: #ecf0f1; border-radius: 4px;">
+                    <!-- 元資料將顯示在這裡 -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="../js/prediction.js"></script>
+</body>
+</html>
