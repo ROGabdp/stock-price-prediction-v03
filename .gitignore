@@ -1,0 +1,48 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Virtual Environment
+venv/
+env/
+ENV/
+.venv/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+*.tmp
+
+# 專案特定 - 後端資料與日誌
+backend/data/uploaded/*.csv
+backend/data/file_*.csv
+backend/logs/*.log
+backend/models/*.keras
+backend/models/*.h5
+
+# 保留目錄結構（空的 .gitkeep 檔案不會被忽略）
+!backend/data/.gitkeep
+!backend/logs/.gitkeep
+!backend/models/.gitkeep
+
+# Keras Tuner 超參數調整暫存
+backend/src/hyperparameter_tuning/
+
+# Jupyter Notebook
+.ipynb_checkpoints/
+*.ipynb
+
+# 測試與臨時檔案
+*.bak
+*.tmp
+*.temp
