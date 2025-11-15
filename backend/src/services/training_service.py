@@ -103,7 +103,28 @@ class TrainingService:
 
             # 取得資料檔案路徑
             data_file = self.metadata_service.get_data_file(data_file_id)
-            data_file_path = Path(data_file["filePath"])
+            file_path_str = data_file["filePath"]
+
+            # WSL2 路徑轉換：如果是 Windows 路徑 (D:\...) 且工作目錄是 WSL (/mnt/...)
+            import os
+            import re
+            if re.match(r'^[A-Z]:\\', file_path_str) and os.getcwd().startswith('/mnt/'):
+                # 將 Windows 路徑轉換為 WSL2 路徑
+                # D:\path\to\file -> /mnt/d/path/to/file
+                drive_letter = file_path_str[0].lower()
+                path_without_drive = file_path_str[3:].replace('\\', '/')
+                file_path_str = f'/mnt/{drive_letter}/{path_without_drive}'
+
+            data_file_path = Path(file_path_str).absolute()
+
+            # 防禦性檢查：確保檔案存在
+            if not data_file_path.exists():
+                raise FileNotFoundError(
+                    f"資料檔案不存在: {data_file_path}\n"
+                    f"工作目錄: {Path.cwd()}\n"
+                    f"原始路徑: {data_file['filePath']}\n"
+                    f"轉換後路徑: {file_path_str}"
+                )
 
             # 建立訓練器
             trainer = ModelTrainer(
@@ -191,10 +212,12 @@ class TrainingService:
 
         except Exception as e:
             # 訓練失敗
+            import traceback
             error_message = str(e)
+            stack_trace = traceback.format_exc()
 
-            # 記錄訓練錯誤
-            log_training_error(model_name=model_name, error_message=error_message)
+            # 記錄訓練錯誤（包含堆疊追蹤）
+            log_training_error(model_name=model_name, error_message=f"{error_message}\n堆疊追蹤:\n{stack_trace}")
 
             self.metadata_service.update_training_task(
                 task_id,

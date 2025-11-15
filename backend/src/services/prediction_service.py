@@ -55,15 +55,24 @@ class PredictionService:
         # 3. 載入 Keras 模型
         keras_model = self.model_service.load_keras_model(model_id)
 
-        # 4. 載入歷史資料
-        df = pd.read_csv(data_file["filePath"])
+        # 4. 載入歷史資料（處理 WSL2 路徑轉換）
+        file_path_str = data_file["filePath"]
+        import os
+        import re
+        if re.match(r'^[A-Z]:\\', file_path_str) and os.getcwd().startswith('/mnt/'):
+            # 將 Windows 路徑轉換為 WSL2 路徑
+            drive_letter = file_path_str[0].lower()
+            path_without_drive = file_path_str[3:].replace('\\', '/')
+            file_path_str = f'/mnt/{drive_letter}/{path_without_drive}'
+
+        df = pd.read_csv(file_path_str)
 
         # 5. 準備預處理器（需要重建以載入訓練時的 scaler）
         preprocessor = DataPreprocessor(
             lookback_window=model_info.hyperparameters.get("lookbackWindow", 60)
         )
         # 使用訓練資料重新擬合 scaler
-        preprocessor.preprocess_data(Path(data_file["filePath"]))
+        preprocessor.preprocess_data(Path(file_path_str))
 
         # 6. 建立預測器
         predictor = ModelPredictor(keras_model, preprocessor)

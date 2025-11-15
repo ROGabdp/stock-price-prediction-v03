@@ -38,8 +38,8 @@ class DataPreprocessor:
         回傳:
             (X_train, X_val, y_train, y_val)
         """
-        # 1. 載入 CSV
-        df = pd.read_csv(csv_path)
+        # 1. 載入 CSV（確保路徑轉換為字串以避免 Windows 路徑問題）
+        df = pd.read_csv(str(csv_path))
 
         # 2. 選擇特徵欄位
         self.feature_columns = self._select_features(df)

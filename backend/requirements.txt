@@ -8,13 +8,13 @@ werkzeug==3.0.1
 
 # Machine Learning Framework
 # CPU 版本（預設）:
-# tensorflow==2.15.0
+# tensorflow==2.16.1
 
 # GPU 版本（NVIDIA GPU + CUDA）:
 # 如果您有 NVIDIA GPU，請先解除安裝 CPU 版本，再安裝 GPU 版本：
 # pip uninstall tensorflow
-# pip install tensorflow[and-cuda]==2.15.0
-tensorflow==2.15.0
+# pip install tensorflow[and-cuda]==2.16.1
+tensorflow==2.16.1
 
 keras-tuner==1.4.6
 
