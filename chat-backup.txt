@@ -284,3 +284,88 @@ CPU
 
   ---
   您想要現在開始安裝 WSL2 嗎？ 我可以陪您一步步完成設定！
+
+
+
+  > 我首次設定完成Ubuntu了，我可以關掉視窗了嗎? 
+  ⎿  ⧉ Selected 1 lines from WSL2-GPU-SETUP.md in Visual Studio Code
+
+● 可以的！如果你已經完成 Ubuntu (WSL2) 的初始設定，可以直接關閉視窗。
+
+  關於 WSL2 的運作方式
+
+  - 關閉視窗不會終止 WSL2：WSL2 會繼續在背景運行一段時間
+  - 自動休眠：如果一段時間沒有活動，WSL2 會自動進入休眠狀態以節省資源
+  - 重新開啟：下次你可以透過以下方式重新進入 Ubuntu：
+    - Windows Terminal 中選擇 Ubuntu
+    - 在命令提示字元或 PowerShell 執行 wsl
+    - 從開始選單啟動 Ubuntu
+
+  手動控制 WSL2（選用）
+
+  如果你想手動管理 WSL2 的狀態，可以在 PowerShell 中使用：
+
+  # 查看 WSL2 狀態
+  wsl --list --verbose
+
+  # 完全關閉 WSL2（釋放所有資源）
+  wsl --shutdown
+
+  # 終止特定發行版
+  wsl --terminate Ubuntu
+
+  建議：一般情況下直接關閉視窗即可，讓 WSL2 自動管理即可。只有在需要釋放記憶體或重新啟動 WSL2 時，才需要手動執行 wsl --shutdown。
+
+
+  > ### 步驟 4: 安裝 Python 環境
+
+在 WSL2 Ubuntu 中執行    這怎麼做? 
+  ⎿  ⧉ Selected 3 lines from WSL2-GPU-SETUP.md in Visual Studio Code
+
+● 這是指在剛才你設定好的 WSL2 Ubuntu 終端機視窗內執行命令。
+
+  具體操作步驟
+
+  1. 開啟 WSL2 Ubuntu 終端機
+
+  有幾種方式：
+
+  方法 1：透過 Windows Terminal（推薦）
+  - 開啟 Windows Terminal
+  - 點擊上方的下拉選單（+ 號旁邊）
+  - 選擇 Ubuntu
+
+  方法 2：透過開始選單
+  - 按 Windows 鍵
+  - 搜尋 Ubuntu
+  - 點擊啟動
+
+  方法 3：透過 PowerShell/命令提示字元
+  - 開啟 PowerShell 或命令提示字元
+  - 輸入 wsl 並按 Enter
+
+  2. 確認你在 Ubuntu 環境中
+
+  成功進入後，你會看到類似這樣的提示符號：
+
+  yourname@DESKTOP-XXXXX:~$
+
+  這表示你現在在 Ubuntu (Linux) 環境中，而不是 Windows。
+
+  3. 執行步驟 4 的命令
+
+  此時你就可以在這個視窗內輸入 WSL2-GPU-SETUP.md 文件中「步驟 4」所列的 Python 安裝命令，例如：
+
+  # 更新套件列表
+  sudo apt update
+
+  # 安裝 Python 相關套件
+  sudo apt install python3 python3-pip python3-venv -y
+
+  如何判斷你在哪個環境？
+
+  - Ubuntu/WSL2：提示符號是 username@hostname:~$，路徑是 Linux 格式（/home/username）
+  - Windows PowerShell：提示符號是 PS C:\Users\username>，路徑是 Windows 格式
+  - Windows CMD：提示符號是 C:\Users\username>
+
+  簡單來說：「在 WSL2 Ubuntu 中執行」= 在 Ubuntu 終端機視窗內輸入並執行命令。
