@@ -14,6 +14,32 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 **Python 版本**: 3.11+
 
+## GPU 加速支援
+
+本專案支援 **自動 GPU 偵測與加速**：
+- **TensorFlow 版本**: 2.16.1 (支援 CPU 與 GPU)
+- **GPU 支援**: NVIDIA GPU (CUDA 自動安裝)
+- **自動偵測**: 啟動時自動偵測可用的 GPU 裝置
+- **開發環境選項**:
+  - **Windows (CPU)**: 使用 CPU 訓練，適合測試
+  - **Windows + WSL2 (GPU)**: 推薦！使用 GPU 加速，設定簡單（參考 `WSL2-GPU-SETUP.md`）
+  - **macOS/Linux**: 視硬體支援 CPU 或 GPU
+
+### GPU 狀態查詢
+啟動後端後，可透過以下 API 查詢 GPU 狀態：
+```bash
+curl http://localhost:5000/api/gpu-status
+```
+
+### 安裝 GPU 版本（可選）
+```bash
+# 如果有 NVIDIA GPU
+pip uninstall tensorflow
+pip install tensorflow[and-cuda]==2.16.1
+```
+
+詳細的 WSL2 GPU 設定請參考 `WSL2-GPU-SETUP.md`。
+
 ## 重要專案規則 (來自專案憲章)
 
 ### 語言與文件要求
@@ -152,31 +178,48 @@ stock-price-prediction-v03/
 
 ## 常用開發指令
 
-### 後端
+### 後端啟動（CPU 模式 - Windows）
 
 ```bash
-# 建立虛擬環境
+# 建立虛擬環境（首次執行）
 python -m venv venv
 
-# 啟動虛擬環境 (Windows)
+# 啟動虛擬環境
 venv\Scripts\activate
-
-# 啟動虛擬環境 (macOS/Linux)
-source venv/bin/activate
 
 # 安裝依賴
 pip install -r backend/requirements.txt
 
 # 啟動 Flask 開發伺服器
-cd backend/src
+cd backend\src
 python app.py
 # 預設運行於 http://localhost:5000
+```
 
-# 程式碼格式化
-black backend/src
+### 後端啟動（GPU 模式 - WSL2）
 
-# 程式碼檢查
-flake8 backend/src
+```bash
+# 啟動 WSL2（在 Windows PowerShell 中）
+wsl -d Ubuntu_D  # 或 wsl（使用預設發行版）
+
+# 切換到專案目錄
+cd /mnt/d/000-github-repositories/stock-price-prediction-v03
+
+# 建立虛擬環境（首次執行）
+python3 -m venv venv
+source venv/bin/activate
+pip install --upgrade pip
+pip install tensorflow[and-cuda]==2.16.1
+pip install -r backend/requirements.txt
+
+# 啟動虛擬環境（之後每次執行）
+source venv/bin/activate
+
+# 啟動 Flask 開發伺服器
+cd backend/src
+python3 app.py
+# 預設運行於 http://localhost:5000
+# 成功啟動會顯示 GPU 偵測訊息
 ```
 
 ### 前端
@@ -192,9 +235,23 @@ python -m http.server 8000
 # 開啟 frontend/index.html
 ```
 
+### 程式碼品質工具
+
+```bash
+# 程式碼格式化
+black backend/src
+
+# 程式碼檢查
+flake8 backend/src
+```
+
 ## API 端點概覽
 
 **Base URL**: `http://localhost:5000/api`
+
+### 系統狀態
+- `GET /api/health` - 健康檢查
+- `GET /api/gpu-status` - 查詢 GPU 狀態
 
 ### 資料管理
 - `POST /data/upload` - 上傳 CSV 檔案
@@ -299,6 +356,24 @@ python -m http.server 8000
 5. **進度監控**: 訓練任務支援進度輪詢，前端定期呼叫 API 查詢狀態
 6. **錯誤處理**: 所有錯誤訊息必須使用正體中文，提供清楚的問題說明
 7. **超參數調整**: 訓練時自動執行，無需手動配置
+8. **GPU 自動偵測**: 系統啟動時自動偵測並配置可用的 GPU 裝置
+
+## 常見開發問題
+
+### 問題 1: 虛擬環境啟動失敗
+**Windows**: 確認執行 `venv\Scripts\activate`（反斜線）
+**macOS/Linux**: 確認執行 `source venv/bin/activate`（正斜線）
+
+### 問題 2: 訓練速度過慢
+- **CPU 模式**: 小資料集測試正常，大資料集建議使用 GPU
+- **GPU 模式**: 參考 `WSL2-GPU-SETUP.md` 設定 GPU 加速
+- **效能差異**: CPU 約 20-30 分鐘，GPU 約 4-6 分鐘（RTX 4070，7976 筆資料）
+
+### 問題 3: CORS 錯誤
+確認後端已啟用 CORS (Flask-CORS)，且前端呼叫的 URL 正確（`http://localhost:5000/api`）
+
+### 問題 4: 找不到 metadata.json
+首次啟動會自動建立 `backend/data/metadata.json`，確認 `backend/data/` 目錄存在
 
 ## 測試資料
 

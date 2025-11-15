@@ -38,48 +38,135 @@
 
 ### 安裝步驟
 
-#### 1. 建立 Python 虛擬環境
+本專案支援兩種運行模式：**CPU 模式**（適合測試）和 **GPU 模式**（適合訓練）
 
-**Windows**:
+#### 選項 A: CPU 模式（Windows）
+
+**1. 建立 Python 虛擬環境**
 ```cmd
 python -m venv venv
 venv\Scripts\activate
 ```
 
-**macOS / Linux**:
-```bash
-python3 -m venv venv
-source venv/bin/activate
-```
-
-#### 2. 安裝後端依賴套件
-
-```bash
+**2. 安裝依賴套件**
+```cmd
 cd backend
 pip install -r requirements.txt
 ```
 
-#### 3. 啟動後端伺服器
-
-```bash
-cd backend/src
+**3. 啟動後端伺服器**
+```cmd
+cd backend\src
 python app.py
 ```
 
 後端將運行於 `http://localhost:5000`
 
-#### 4. 啟動前端 (開啟新的終端機)
-
-**方法 1: Python 簡易伺服器**
-```bash
+**4. 啟動前端（開啟新的終端機）**
+```cmd
 cd frontend
 python -m http.server 8000
 ```
 
-**方法 2: 直接開啟 HTML**
-- 直接在瀏覽器中開啟 `frontend/index.html`
+前端將運行於 `http://localhost:8000`
+
+---
+
+#### 選項 B: GPU 模式（WSL2 + NVIDIA GPU）
+
+**前置需求**：
+- Windows 10/11
+- NVIDIA GPU 驅動已安裝
+- 已安裝 WSL2 Ubuntu（參考 `WSL2-GPU-SETUP.md`）
+
+**1. 啟動 WSL2**
+```powershell
+# 如果您的 WSL 發行版名稱是 Ubuntu_D
+wsl -d Ubuntu_D
+
+# 或使用預設的 Ubuntu
+wsl
+```
+
+**2. 切換到專案目錄**
+```bash
+cd /mnt/d/000-github-repositories/stock-price-prediction-v03
+```
+
+**3. 建立虛擬環境（首次執行）**
+```bash
+python3 -m venv venv
+source venv/bin/activate
+
+# 升級 pip
+pip install --upgrade pip
+
+# 安裝 TensorFlow GPU 版本
+pip install tensorflow[and-cuda]==2.16.1
+
+# 安裝其他依賴
+pip install -r backend/requirements.txt
+```
+
+**4. 啟動虛擬環境（之後每次執行）**
+```bash
+cd /mnt/d/000-github-repositories/stock-price-prediction-v03
+source venv/bin/activate
+```
+
+**5. 啟動後端伺服器**
+```bash
+cd backend/src
+python3 app.py
+```
+
+成功啟動後會顯示：
+```
+============================================================
+✓ 偵測到 1 個 NVIDIA GPU 裝置
+  GPU 0: /physical_device:GPU:0
+✓ GPU 記憶體成長模式已啟用
+✓ 訓練將使用 GPU 加速
+============================================================
+```
+
+後端將運行於 `http://localhost:5000`
+
+**6. 啟動前端（在 Windows 終端機）**
+```cmd
+cd frontend
+python -m http.server 8000
+```
 
 前端將運行於 `http://localhost:8000`
+
+---
+
+#### macOS / Linux
+
+**1. 建立 Python 虛擬環境**
+```bash
+python3 -m venv venv
+source venv/bin/activate
+```
+
+**2. 安裝依賴套件**
+```bash
+cd backend
+pip install -r requirements.txt
+```
+
+**3. 啟動後端伺服器**
+```bash
+cd backend/src
+python3 app.py
+```
+
+**4. 啟動前端（開啟新的終端機）**
+```bash
+cd frontend
+python3 -m http.server 8000
+```
 
 ### 使用範例資料
 

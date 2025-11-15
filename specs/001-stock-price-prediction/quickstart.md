@@ -36,7 +36,15 @@ git clone <repository-url>
 cd stock-price-prediction-v03
 ```
 
-### 2.2 建立 Python 虛擬環境
+### 2.2 選擇運行模式
+
+本專案支援兩種運行模式：
+- **CPU 模式**（Windows）：適合測試與小資料集訓練
+- **GPU 模式**（WSL2）：適合大規模訓練，速度快 4-6 倍
+
+**若您有 NVIDIA GPU**，強烈建議使用 GPU 模式，請參考 `WSL2-GPU-SETUP.md` 完整設定指南。
+
+### 2.3 建立 Python 虛擬環境（CPU 模式）
 
 **Windows**:
 ```cmd
@@ -58,7 +66,7 @@ source venv/bin/activate
 
 **驗證**: 啟動後，命令提示字元前方應顯示 `(venv)`。
 
-### 2.3 安裝後端依賴套件
+### 2.4 安裝後端依賴套件
 
 ```bash
 cd backend
@@ -69,7 +77,7 @@ pip install -r requirements.txt
 
 **預期輸出**: 所有套件安裝成功，無錯誤訊息。
 
-### 2.4 驗證安裝
+### 2.5 驗證安裝
 
 ```bash
 # 驗證 TensorFlow 安裝
@@ -81,7 +89,7 @@ python -c "import flask; print(f'Flask 版本: {flask.__version__}')"
 
 **預期輸出**:
 ```
-TensorFlow 版本: 2.15.0
+TensorFlow 版本: 2.16.1
 Flask 版本: 3.0.0
 ```
 
@@ -91,22 +99,46 @@ Flask 版本: 3.0.0
 
 ### 3.1 啟動後端 API 伺服器
 
-在 `backend/` 目錄下執行：
+#### CPU 模式（Windows）
+
+在專案根目錄執行：
+
+```cmd
+cd backend\src
+python app.py
+```
+
+#### GPU 模式（WSL2）
+
+在 WSL2 終端機執行：
 
 ```bash
-# 設定 Flask 環境變數
-export FLASK_APP=src/app.py  # macOS/Linux
-set FLASK_APP=src/app.py     # Windows
+# 啟動 WSL2（在 Windows PowerShell 中）
+wsl -d Ubuntu_D
 
-# 啟動開發伺服器
-python -m flask run
+# 切換到專案並啟動虛擬環境
+cd /mnt/d/000-github-repositories/stock-price-prediction-v03
+source venv/bin/activate
+
+# 啟動後端
+cd backend/src
+python3 app.py
 ```
 
-**預期輸出**:
+**預期輸出（CPU 模式）**:
 ```
  * Running on http://127.0.0.1:5000
- * Restarting with stat
- * Debugger is active!
+```
+
+**預期輸出（GPU 模式）**:
+```
+============================================================
+✓ 偵測到 1 個 NVIDIA GPU 裝置
+  GPU 0: /physical_device:GPU:0
+✓ GPU 記憶體成長模式已啟用
+✓ 訓練將使用 GPU 加速
+============================================================
+ * Running on http://127.0.0.1:5000
 ```
 
 **注意**: 保持此終端視窗開啟，後端伺服器將持續運行。

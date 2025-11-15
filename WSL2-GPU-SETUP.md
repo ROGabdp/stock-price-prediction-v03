@@ -1,10 +1,10 @@
 # WSL2 GPU 加速完整設定指南
 
-本指南將協助您在 WSL2 環境中啟用 NVIDIA GPU 加速，使用最新版 TensorFlow 2.15。
+本指南將協助您在 WSL2 環境中啟用 NVIDIA GPU 加速，使用 TensorFlow 2.16.1。
 
 ## 為什麼選擇 WSL2？
 
-- ✅ 使用最新版 TensorFlow 2.15
+- ✅ 使用較新版 TensorFlow 2.16.1
 - ✅ CUDA 自動管理，無需手動安裝
 - ✅ 不會與 Windows 上的 CUDA 12.9 衝突
 - ✅ GPU 效能接近原生（約 95%）
@@ -111,7 +111,7 @@ source venv/bin/activate
 pip install --upgrade pip
 
 # 安裝 TensorFlow GPU 版本（會自動安裝 CUDA）
-pip install tensorflow[and-cuda]==2.15.0
+pip install tensorflow[and-cuda]==2.16.1
 
 # 安裝其他依賴
 pip install -r backend/requirements.txt
@@ -125,7 +125,7 @@ python3 -c "import tensorflow as tf; print('TensorFlow 版本:', tf.__version__)
 
 預期輸出：
 ```
-TensorFlow 版本: 2.15.0
+TensorFlow 版本: 2.16.1
 GPU 可用: [PhysicalDevice(name='/physical_device:GPU:0', device_type='GPU')]
 ```
 
@@ -144,14 +144,23 @@ python3 app.py
 ✓ GPU 記憶體成長模式已啟用
 ✓ 訓練將使用 GPU 加速
 ============================================================
+ * Running on http://127.0.0.1:5000
 ```
 
-### 步驟 9: 存取前端（從 Windows）
+後端將運行於 `http://localhost:5000`
 
-前端仍在 Windows 上執行，使用瀏覽器訪問：
+### 步驟 9: 啟動前端（在 Windows 終端機）
+
+**開啟新的 Windows 終端機（PowerShell 或 CMD）**，前端在 Windows 上執行：
+
+```cmd
+cd D:\000-github-repositories\stock-price-prediction-v03\frontend
+python -m http.server 8000
 ```
-http://localhost:5000
-```
+
+前端將運行於 `http://localhost:8000`
+
+使用瀏覽器訪問 `http://localhost:8000` 即可使用前端介面。
 
 ## 使用技巧
 
@@ -164,16 +173,21 @@ nano ~/.bashrc
 
 在檔案末尾加入：
 ```bash
-# 快速切換到專案
+# 快速切換到專案並啟動虛擬環境
 alias cdproject='cd /mnt/d/000-github-repositories/stock-price-prediction-v03 && source venv/bin/activate'
+
+# 快速啟動後端伺服器
+alias runserver='cd /mnt/d/000-github-repositories/stock-price-prediction-v03/backend/src && python3 app.py'
 ```
 
-儲存後，執行：
+儲存後（按 `Ctrl+X`，然後 `Y`，再按 `Enter`），執行：
 ```bash
 source ~/.bashrc
 ```
 
-之後只要輸入 `cdproject` 就能快速進入專案並啟動虛擬環境。
+之後只要輸入：
+- `cdproject` - 進入專案並啟動虛擬環境
+- `runserver` - 直接啟動後端伺服器
 
 ### WSL2 與 Windows 檔案互訪
 
@@ -208,7 +222,7 @@ wsl --shutdown
 sudo apt install -y build-essential
 
 # 再次嘗試安裝
-pip install tensorflow[and-cuda]==2.15.0
+pip install tensorflow[and-cuda]==2.16.1
 ```
 
 ### Q3: WSL2 使用的記憶體太多
