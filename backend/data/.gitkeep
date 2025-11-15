@@ -1,0 +1,2 @@
+# 此檔案確保 data 目錄被 git 追蹤
+# metadata.json 會在首次啟動後端時自動建立

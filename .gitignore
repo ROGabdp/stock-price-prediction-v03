@@ -26,12 +26,14 @@ Thumbs.db
 # 專案特定 - 後端資料與日誌
 backend/data/uploaded/*.csv
 backend/data/file_*.csv
+backend/data/metadata.json
 backend/logs/*.log
 backend/models/*.keras
 backend/models/*.h5
 
-# 保留目錄結構（空的 .gitkeep 檔案不會被忽略）
+# 保留目錄結構與範本檔案
 !backend/data/.gitkeep
+!backend/data/metadata.json.template
 !backend/logs/.gitkeep
 !backend/models/.gitkeep
 
